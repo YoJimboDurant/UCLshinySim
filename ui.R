@@ -7,7 +7,7 @@ tabPanelAbout <- source("about.R")$value
 shinyUI(pageWithSidebar(
 
   # Application title
-  headerPanel("NADA and Substitution Methods - Simulator"),
+  headerPanel("NADA and Substitution Methods - UCL Simulator"),
 
   # Sidebar with a slider input for number of observations
   sidebarPanel(
@@ -164,8 +164,9 @@ shinyUI(pageWithSidebar(
     tabsetPanel(
       tabPanel("Plots",
                plotOutput("Meangraph"),
-               plotOutput("SDgraph")
-      ),
+               ## plotOutput("SDgraph")
+               plotOutput("UCLgraph")
+               ),
 
       tabPanel("Summary",
                verbatimTextOutput("summary"),

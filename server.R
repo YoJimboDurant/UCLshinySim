@@ -109,6 +109,40 @@ return(results)
 
   })
 
+
+  output$UCLgraph <- renderPlot({
+      results <- datasetInput()
+      dfx <- results$data
+      # browser()
+
+      myros <- dlply(dfx, .(sampleNum), function(dfx) ros(dfx$obs, dfx$cen))
+      rosCIs <- ldply(myros, rosSimpleBoot)
+      browser()
+      coverage <- sum(rosCIs[grep("UCL", names(rosCIs)])>=results[["results"]]$pop.mean[1])/dim(rosCIs)[1]
+
+      # need to do column sums not overall sums above
+
+      boxplot(rosCIs[grep("UCL", names(rosCIs))],
+                        col="light blue",
+            ylab="UCL",      # y axis label
+            xlab="UCL Method",    # x axis label
+            main="ROS UCL Coverage",    # graphic title
+            las=1,                # controls the orientation of the axis labels (1=horizontal)
+            par(list(cex=0.8)),
+            axes=FALSE)
+    abline(h=results$pop.mean[1], lty=2)
+    axis(1, at=1:5, labels=c(
+                    "Normal",
+                    "Basic",
+                    "Percentile",
+                    "BCa",
+                    "Stud"))
+    axis(2)
+    text(0.4, results$pop.mean[1], "Pop.\n Mean", pos=3)
+
+
+  })
+
   output$SDgraph <- renderPlot({
     results <- datasetInput()
     results <- results$results
