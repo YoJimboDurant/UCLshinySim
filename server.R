@@ -118,7 +118,7 @@ return(results)
       myros <- dlply(dfx, .(sampleNum), function(dfx) ros(dfx$obs, dfx$cen))
       rosCIs <- ldply(myros, rosSimpleBoot)
       browser()
-      coverage <- sum(rosCIs[grep("UCL", names(rosCIs)])>=results[["results"]]$pop.mean[1])/dim(rosCIs)[1]
+      coverage <- sum(rosCIs[grep("UCL", names(rosCIs))]>=results[["results"]]$pop.mean[1])/dim(rosCIs)[1]
 
       # need to do column sums not overall sums above
 
