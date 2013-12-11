@@ -49,7 +49,11 @@ return(ci)
 }
 
 
+<<<<<<< HEAD
 lmbootRos_MI <- function(rosObj, R.model=10, R.boot=1999, M=100, p=c(0.025,0.975)){
+=======
+lmbootRos4 <- function(rosObj, R.model=10, R.boot=1999, M=100, p=c(0.025,0.975)){
+>>>>>>> ab889ed163992a6038dfef7cd259707699d20c13
   
   require(NADA)
   require(simpleboot)
