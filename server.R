@@ -18,13 +18,13 @@ shinyServer(function(input, output) {
     ros.mean <- ldply(ros.results, mean)
     ros.sd <-ldply(ros.results, sd)
 
-    km.results <- dlply(dfx, .(sampleNum), function(dfx) cenfit(dfx$obs, dfx$cen))
-    km.mean <- ldply(km.results, mean)
-    km.sd <-ldply(km.results, sd)
+#     km.results <- dlply(dfx, .(sampleNum), function(dfx) cenfit(dfx$obs, dfx$cen))
+#     km.mean <- ldply(km.results, mean)
+#     km.sd <-ldply(km.results, sd)
 
-    mle.results <- dlply(dfx, .(sampleNum), function(dfx) cenmle(dfx$obs, dfx$cen))
-    mle.mean <- ldply(mle.results, mean)
-    mle.sd <-ldply(mle.results, sd)
+#     mle.results <- dlply(dfx, .(sampleNum), function(dfx) cenmle(dfx$obs, dfx$cen))
+#     mle.mean <- ldply(mle.results, mean)
+#     mle.sd <-ldply(mle.results, sd)
 
     # calculate substituted means and SD
     zero.results <- ddply(dfx, .(sampleNum), summarise, sample.mean=mean(obs_zero), sample.sd = sd(obs_zero))
@@ -42,10 +42,10 @@ shinyServer(function(input, output) {
       sample.sd = sample.results$sample.sd,
       ros.mean=ros.mean$V1,
       ros.sd=ros.sd$V1,
-      km.mean=km.mean$mean,
-      km.sd=km.sd$V1,
-      mle.mean=mle.mean$mean,
-      mle.sd=mle.sd$V1,
+#       km.mean=km.mean$mean,
+#       km.sd=km.sd$V1,
+#       mle.mean=mle.mean$mean,
+#       mle.sd=mle.sd$V1,
       sub0.mean = zero.results$sample.mean,
       sub0.sd = zero.results$sample.sd,
       subHalf.mean = half.results$sample.mean,
@@ -116,28 +116,28 @@ return(results)
       # browser()
 
       myros <- dlply(dfx, .(sampleNum), function(dfx) ros(dfx$obs, dfx$cen))
-      rosCIs <- ldply(myros, rosSimpleBoot)
-      browser()
+      rosCIs <- ldply(myros, rosSimpleBoot2)
+      # browser()
       coverage <- sum(rosCIs[grep("UCL", names(rosCIs))]>=results[["results"]]$pop.mean[1])/dim(rosCIs)[1]
 
       # need to do column sums not overall sums above
 
       boxplot(rosCIs[grep("UCL", names(rosCIs))],
-                        col="light blue",
-            ylab="UCL",      # y axis label
-            xlab="UCL Method",    # x axis label
-            main="ROS UCL Coverage",    # graphic title
-            las=1,                # controls the orientation of the axis labels (1=horizontal)
-            par(list(cex=0.8)),
-            axes=FALSE)
+                        col="light blue")
+#             ,ylab="UCL",      # y axis label
+#             xlab="UCL Method",    # x axis label
+#             ,main="ROS UCL Coverage",    # graphic title
+#             las=1,                # controls the orientation of the axis labels (1=horizontal)
+#             par(list(cex=0.8)),
+#             axes=TRUE)
     abline(h=results$pop.mean[1], lty=2)
-    axis(1, at=1:5, labels=c(
-                    "Normal",
-                    "Basic",
-                    "Percentile",
-                    "BCa",
-                    "Stud"))
-    axis(2)
+#     axis(1, at=1:5, labels=c(
+#                     "Normal",
+#                     "Basic",
+#                     "Percentile",
+#                     "BCa",
+#                     "Stud"))
+#     #axis(2)
     text(0.4, results$pop.mean[1], "Pop.\n Mean", pos=3)
 
 

@@ -163,7 +163,7 @@ shinyUI(pageWithSidebar(
     # we create tabs - plots, summary, RMSE, Bias, and Censored Statistical Summary
     tabsetPanel(
       tabPanel("Plots",
-               plotOutput("Meangraph"),
+               # plotOutput("Meangraph"),
                ## plotOutput("SDgraph")
                plotOutput("UCLgraph")
                ),
