@@ -106,12 +106,26 @@ mean.boot <- function(x,ind)
   return(c(mean(x[ind]),var(x[ind])/length(ind)))
 }
 
+bootRosMean <- function(dfx,i){
+  dfx <- dfx[i,]
+  c(mean(dfx$modeled), (var(dfx$modeled)/length(dfx$modeled)))
+  
+}
+
+bootMean <- function(x, i){
+  x <- x[i]
+  c(mean(x), (var(x)/length(x)))
+  
+}
+
 rosSimpleBoot <- function(myros, conf = 0.95, R=1999, M=50){
   require(NADA)
   require(boot)
 
   mydfx <- data.frame(myros)
-  myboot <- one.boot(mydfx$modeled, mean, R=R, M=M, student=TRUE)
+  
+  
+  myboot <- boot(mydfx, bootRosMean, R=R)
   bootci <- boot.ci(myboot)
 
   bootCI <- data.frame(matrix(c(bootci$norm[2:3], bootci$basic[4:5],
@@ -165,7 +179,7 @@ lmbootRos_MI <- function(rosObj, R.model=10, R.boot=1999, M=100, p=c(0.025,0.975
   sampleData <- c(obs, impDF$lx.fitted)
   sampleWeight <- c(weight, impDF$weight) # weight should sum to original sample size
   
-  myboot <- one.boot(sampleData, mean, R= R.boot, w=sampleWeight, student=TRUE, M=M)
+  myboot <- boot(sampleData, bootMean, R= R.boot, w=sampleWeight)
   bootci <- boot.ci(myboot, t0=mean(rosObj), 
                     t=myboot$t[,1], var.t0=sd(rosObj)^2, var.t=myboot$t[,2])
   bootCI <- data.frame(matrix(c(bootci$normal[2:3], bootci$basic[4:5],
