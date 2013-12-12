@@ -141,7 +141,7 @@ rosSimpleBoot <- function(myros, conf = 0.95, R=1999, M=50){
 
 
 
-lmbootRos_MI <- function(rosObj, R.model=10, R.boot=1999, M=100, p=c(0.025,0.975)){
+lmbootRos_MI <- function(rosObj, R.model=10, R.boot=4999, p=c(0.025,0.975)){
   
   require(NADA)
   require(simpleboot)
